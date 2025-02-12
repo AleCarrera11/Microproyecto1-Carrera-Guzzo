@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 const iniciar = document.getElementById("iniciar");
 const modal_container = document.getElementById("menu-principal");
 const juego_simon_says = document.getElementById("juego simon says");
@@ -171,4 +169,3 @@ class Simon {
         }
     }
 }
->>>>>>> Stashed changes
