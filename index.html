@@ -1,48 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Microproyecto 1 Carrera-Guzzo</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div id="menu-principal" class="modal-container show" >
-            <div class="modal">
-                <div>
-                    <h1>Simon Says</h1>
-                    <p>¿Estás listo para un desafío? ¡Prepárense para poner a prueba sus reflejos y seguir mis instrucciones al pie de la letra!</p>
-                </div>
-                <div class="record"> 
-                    <h2>Records</h2> <!-- Por programar, por ahora solo esquema inicial -->
-                    <ol>
-                        <li>Primer lugar</li>
-                        <li>Segundo lugar</li>
-                        <li>Tercer Lugar</li>
-                        <li>Cuarto lugar</li>
-                        <li>Quinto lugar</li>
-                    </ol>
-                </div>
-                <div>
-                    <input type="text"  placeholder="Ingrese su nombre">                             
+    <title>Microproyecto Carrera-Guzzo</title>
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+    <div id="menu-principal" class="modal-container show">
+        <div class="modal">
+            <div>
+                <h1>Simon Says</h1>
+                <p>¿Estás listo para un desafío? ¡Prepárense para poner a prueba sus reflejos y seguir mis instrucciones al pie de la letra!</p>
+            </div>
+            <div class="record">
+                <h2>Records</h2>
+                <ol>
+                    <li>Primer lugar</li>
+                    <li>Segundo lugar</li>
+                    <li>Tercer Lugar</li>
+                    <li>Cuarto lugar</li>
+                    <li>Quinto lugar</li>
+                </ol>
+            </div>
+            <div>
+                <input type="text" id="nombreJugadorInput" placeholder="Ingrese su nombre">
                 <div></div>
-                    <button id="iniciar">Iniciar</button>
-                </div>
+                <button id="iniciar">Iniciar Juego</button>
             </div>
         </div>
-        <div id="juego simon says" class="encabezado-juego" style="display: none;">
-            <h1>Simon says</h1>
-            <h2>Puntaje</h2>
-            <h2>Nombre ingresado por el participante</h2>
-            <div class="circulo">
-                 <button class="boton rojo"></button>
-                 <button class="boton verde"></button>
-                 <button class="boton azul"></button>
-                 <button class="boton amarillo"></button>
-            </div>            
-            <button id="reiniciar">Reiniciar</button>
+    </div>
+    <div id="juego-simon-says" class="encabezado-juego" style="display: none;">
+        <h1>Simon says</h1>
+        <div id="score">Puntaje: 0</div>
+        <div id="bestScore">Mejor Puntaje: <span id="bestScoreValue">0</span></div>
+        <div class="circulo">
+            <button class="boton rojo" data-color="0"></button>
+            <button class="boton verde" data-color="1"></button>
+            <button class="boton azul" data-color="2"></button>
+            <button class="boton amarillo" data-color="3"></button>
         </div>
-        <script src="script.js"></script>
-    </body>
+        <button id="reiniciar">Reiniciar</button>
+        <button id="menu">Volver al Menu</button>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>
