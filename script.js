@@ -1,18 +1,19 @@
 const iniciar = document.getElementById("iniciar");
 const modal_container = document.getElementById("menu-principal");
-const juego_simon_says = document.getElementById("juego simon says");
+const juego_simon_says = document.getElementById("juego-simon-says");
 const reiniciar = document.getElementById("reiniciar");
 const roundDisplay = document.getElementById("round");
 const scoreDisplay = document.getElementById("score");
 const bestScoreValueDisplay = document.getElementById("bestScoreValue");
 const simonButtons = document.querySelectorAll(".boton");
-const nicknameInput = document.getElementById("nicknameInput");
+const nombreJugador = document.getElementById("nombreJugadorInput");
+const menu = document.getElementById("menu");
 
 let simon;
 
 iniciar.addEventListener("click", () => {
-    const nickname = nicknameInput.value;
-    if (nickname.trim() === "") {
+    const nombreJugador = nombreJugadorInput.value;
+    if (nombreJugador.trim() === "") {
         alert("Por favor, ingresa tu nombre.");
         return;
     }
@@ -20,7 +21,7 @@ iniciar.addEventListener("click", () => {
     modal_container.classList.remove("show");
     juego_simon_says.style.display = "block";
 
-    simon = new Simon(simonButtons, iniciar, roundDisplay, scoreDisplay, bestScoreValueDisplay, nickname);
+    simon = new Simon(simonButtons, iniciar, roundDisplay, scoreDisplay, bestScoreValueDisplay, nombreJugador);
     simon.init();
 });
 
@@ -30,8 +31,12 @@ reiniciar.addEventListener("click", () => {
     }
 });
 
+menu.addEventListener("click", () => {
+    modal_container.classList.add("show");
+});
+
 class Simon {
-    constructor(simonButtons, startButton, roundDisplay, scoreDisplay, bestScoreValueDisplay, nickname) {
+    constructor(simonButtons, startButton, roundDisplay, scoreDisplay, bestScoreValueDisplay, nombreJugador) {
         this.round = 0;
         this.userPosition = 0;
         this.totalRounds = 10;
@@ -40,7 +45,7 @@ class Simon {
         this.blockedButtons = true;
         this.buttons = Array.from(simonButtons);
         this.score = 0;
-        this.nickname = nickname;
+        this.nombreJugador = nombreJugador;
         this.bestScore = localStorage.getItem('bestScore') ? parseInt(localStorage.getItem('bestScore')) : 0;
         this.display = {
             startButton,

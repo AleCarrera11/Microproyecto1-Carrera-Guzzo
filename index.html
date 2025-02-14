@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simón dice</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&display=swap" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet"/>
 </head>
 <body>
     <div id="menu-principal" class="modal-container show">
@@ -25,17 +24,16 @@
                 </ol>
             </div>
             <div>
-                <input type="text" id="nicknameInput" placeholder="Ingrese su nombre">
+                <input type="text" id="nombreJugadorInput" placeholder="Ingrese su nombre">
                 <div></div>
-                <button id="iniciar">Iniciar</button>
+                <button id="iniciar">Iniciar Juego</button>
             </div>
         </div>
     </div>
-    <div id="juego simon says" class="encabezado-juego" style="display: none;">
+    <div id="juego-simon-says" class="encabezado-juego" style="display: none;">
         <h1>Simon says</h1>
         <div id="score">Puntaje: 0</div>
         <div id="bestScore">Mejor Puntaje: <span id="bestScoreValue">0</span></div>
-        <div id="round">Ronda: 0</div>
         <div class="circulo">
             <button class="boton rojo" data-color="0"></button>
             <button class="boton verde" data-color="1"></button>
@@ -43,6 +41,7 @@
             <button class="boton amarillo" data-color="3"></button>
         </div>
         <button id="reiniciar">Reiniciar</button>
+        <button id="menu">Volver al Menu</button>
     </div>
     <script src="script.js"></script>
 </body>
