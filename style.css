@@ -23,7 +23,7 @@ button {
     cursor: pointer;
     font-size: 14px;
     padding: 10px 25px;
-    transition: all 0.2s ease; /* Transición para todas las propiedades */
+    transition: all 0.2s ease; 
 }
 
 .modal-container {
@@ -109,7 +109,8 @@ p {
     position: absolute;
     cursor: pointer;
     border: none;
-    transition: all 0.2s ease; /* Transición para todas las propiedades */
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease; /* Ajuste solo a las propiedades relevantes */
+    z-index: 1;
 }
 
 .rojo {
@@ -138,8 +139,11 @@ p {
 
 .active,
 .boton:active {
-    filter: brightness(4);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    filter: brightness(2) saturate(1.5);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    transform: scale(1.1);
+    transition: all 0.2s ease-in-out;
+    z-index: 10;
 }
 
 .winner {
@@ -154,9 +158,5 @@ p {
 
 #bestScore {
     margin-top: 10px;
-}
-
-#bestScoreValue {
     font-weight: bold;
 }
-

@@ -1,16 +1,5 @@
 const iniciar = document.getElementById("iniciar");
 const modal_container = document.getElementById("menu-principal");
-const juego_simon_says = document.getElementById("juego simon says"); // Obtén el elemento del juego
-const reiniciar = document.getElementById("reiniciar");
-
-iniciar.addEventListener("click", () => {
-    modal_container.classList.remove("show");
-    juego_simon_says.style.display = "block"; // Muestra el juego
-});
-
-
-const iniciar = document.getElementById("iniciar");
-const modal_container = document.getElementById("menu-principal");
 const juego_simon_says = document.getElementById("juego-simon-says");
 const reiniciar = document.getElementById("reiniciar");
 const roundDisplay = document.getElementById("round");
@@ -22,6 +11,10 @@ const menu = document.getElementById("menu");
 
 let simon;
 
+//Cargar registros de puntajes
+document.addEventListener("DOMContentLoaded", cargarRecords);
+
+//Al clic en el botón iniciar, empieza un nuevo juego
 iniciar.addEventListener("click", () => {
     const nombreJugador = nombreJugadorInput.value;
     if (nombreJugador.trim() === "") {
@@ -29,23 +22,47 @@ iniciar.addEventListener("click", () => {
         return;
     }
 
+    localStorage.setItem("nombreJugador", nombreJugador);
+
+    //Oculta menú y muestra el juego
     modal_container.classList.remove("show");
     juego_simon_says.style.display = "block";
-
+    
+    document.getElementById("nombreJugador").textContent = `Jugador: ${nombreJugador}`;
     simon = new Simon(simonButtons, iniciar, roundDisplay, scoreDisplay, bestScoreValueDisplay, nombreJugador);
     simon.init();
 });
 
+//Función reiniciar
 reiniciar.addEventListener("click", () => {
     if (simon) {
         simon.startGame();
+        
+        //indicar mejor puntaje
+        const bestScore = Math.max(...records.map(record => record.puntaje));
+        localStorage.setItem("bestScore", bestScore);
+
     }
 });
 
+
+//Botón volver al menú
 menu.addEventListener("click", () => {
+    juego_simon_says.style.display = "none";
     modal_container.classList.add("show");
+    iniciar.disabled = false; 
+
+    // Recuperar el nombre del jugador y el mejor puntaje del localStorage
+    const nombreJugadorGuardado = localStorage.getItem("nombreJugador");
+    if (nombreJugadorGuardado) {
+        document.getElementById("nombreJugadorInput").value = nombreJugadorGuardado;  
+    }
+
+    cargarRecords();
 });
 
+
+//Clase principal del juego 
 class Simon {
     constructor(simonButtons, startButton, roundDisplay, scoreDisplay, bestScoreValueDisplay, nombreJugador) {
         this.round = 0;
@@ -64,21 +81,25 @@ class Simon {
             score: scoreDisplay,
             bestScoreValue: bestScoreValueDisplay
         };
-        this.errorSound = new Audio('./sounds/error.wav'); // Asegúrate de tener el archivo de sonido "error.wav" en la carpeta "sounds"
+        this.errorSound = new Audio('./sounds/error.mp3'); // Asegúrate de tener el archivo de sonido "error.wav" en la carpeta "sounds"
         this.buttonSounds = [
-            new Audio('./sounds/1.mp3'), // Asegúrate de tener los archivos de sonido "1.mp3", "2.mp3", "3.mp3" y "4.mp3" en la carpeta "sounds"
-            new Audio('./sounds/2.mp3'),
-            new Audio('./sounds/3.mp3'),
-            new Audio('./sounds/4.mp3')
+            new Audio('./sounds/do.mp3'),
+            new Audio('./sounds/re.mp3'),
+            new Audio('./sounds/mi.mp3'),
+            new Audio('./sounds/fa.mp3')
         ];
     }
 
+    //iniciar el juego
     init() {
         this.display.startButton.disabled = true;
         this.display.bestScoreValue.textContent = this.bestScore;
         this.startGame();
+        const bestScore = Math.max(...records.map(record => record.puntaje));
+        localStorage.setItem("bestScore", bestScore);
     }
 
+    //Comenzar una nueva ronda del juego
     startGame() {
         this.display.startButton.disabled = true;
         this.updateRound(0);
@@ -93,29 +114,34 @@ class Simon {
         this.showSequence();
     }
 
+    //Actualiza el valor de ronda, con el actual
     updateRound(value) {
         this.round = value;
         this.display.round.textContent = `Ronda ${this.round}`;
     }
 
+    //Actualiza el valor del puntaje
     updateScore() {
         this.display.score.textContent = `Puntaje: ${this.score}`;
     }
 
+    //Crea una nueva secuencia
     createSequence() {
         return Array.from({ length: this.totalRounds }, () => this.getRandomColor());
     }
 
+    //Para la escogencia aleatorio del botón en la secuencia
     getRandomColor() {
         return Math.floor(Math.random() * 4);
     }
 
+    //Función al presionar un botón
     buttonClick(value) {
         if (!this.blockedButtons) {
             this.validateChosenColor(value);
         }
     }
-
+    // Valida si el color seleccionado es el correcto
     validateChosenColor(value) {
         if (this.sequence[this.userPosition] === value) {
             this.buttonSounds[value].play();
@@ -133,6 +159,7 @@ class Simon {
         }
     }
 
+    // Verifica si el juego terminó
     isGameOver() {
         if (this.round === this.totalRounds) {
             this.gameWon();
@@ -142,12 +169,13 @@ class Simon {
         }
     }
 
+    // Muestra la secuencia de botones a repetir
     showSequence() {
         this.blockedButtons = true;
         let sequenceIndex = 0;
         let timer = setInterval(() => {
             const button = this.buttons[this.sequence[sequenceIndex]];
-            this.buttonSounds[this.sequence[sequenceIndex]].play();
+            setTimeout(() => this.buttonSounds[this.sequence[sequenceIndex]].play(), 10); 
             this.toggleButtonStyle(button);
             setTimeout(() => this.toggleButtonStyle(button), this.speed / 2);
             sequenceIndex++;
@@ -158,6 +186,7 @@ class Simon {
         }, this.speed);
     }
 
+    // Cambia el estilo del botón 
     toggleButtonStyle(button) {
         button.classList.toggle('active');
     }
@@ -166,7 +195,8 @@ class Simon {
         this.errorSound.play();
         this.display.startButton.disabled = false;
         this.blockedButtons = true;
-        alert("Game Over!");
+        alert("Perdiste! Reinicia de nuevo el juego si quieres volver a intentarlo");
+        guardarRecord(this.nombreJugador, this.score); 
     }
 
     gameWon() {
@@ -176,12 +206,42 @@ class Simon {
             element.classList.add('winner');
         });
         this.updateRound('');
-        alert("You Win!");
-
-        if (this.score > this.bestScore) {
-            this.bestScore = this.score;
-            localStorage.setItem('bestScore', this.bestScore);
-            this.display.bestScoreValue.textContent = this.bestScore;
-        }
+        alert("Ganaste!");
+    
+        guardarRecord(this.nombreJugador, this.score); 
     }
+}
+
+// Función para cargar los records en la interfaz 
+function cargarRecords() {
+    const records = JSON.parse(localStorage.getItem("records")) || [];
+    const listaRecords = document.querySelector(".record ol");
+    
+    //Ordenar record
+    records.sort((a, b) => b.puntaje - a.puntaje);
+
+    listaRecords.innerHTML = "";
+    records.forEach((record, index) => {
+        const li = document.createElement("li");
+        li.textContent = ` ${record.nombre}: ${record.puntaje}`;
+        listaRecords.appendChild(li);
+    });
+}
+
+// Guardar un nuevo record
+function guardarRecord(nombreJugador, puntaje) {
+    const records = JSON.parse(localStorage.getItem("records")) || [];
+    
+    records.push({ nombre: nombreJugador, puntaje: puntaje });
+    
+    
+    records.sort((a, b) => b.puntaje - a.puntaje);
+
+    if (records.length > 5) {
+        records.pop();
+    }
+    localStorage.setItem("records", JSON.stringify(records));
+    
+    const bestScore = Math.max(...records.map(record => record.puntaje));
+    localStorage.setItem("bestScore", bestScore);
 }
