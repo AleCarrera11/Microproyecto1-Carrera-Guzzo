@@ -196,6 +196,7 @@ class Simon {
     }
 
     gameLost() {
+        this.errorSound.currentTime=0;
         this.errorSound.play();
         this.display.startButton.disabled = false;
         this.blockedButtons = true;
