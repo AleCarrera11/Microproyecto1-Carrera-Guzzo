@@ -12,6 +12,9 @@ body {
     justify-content: center;
     min-height: 100vh;
     margin: 0;
+    padding: 0;
+    flex-direction: column;
+    text-align: center;
 }
 
 button {
@@ -23,7 +26,7 @@ button {
     cursor: pointer;
     font-size: 14px;
     padding: 10px 25px;
-    transition: all 0.2s ease; 
+    transition: all 0.2s ease;
 }
 
 .modal-container {
@@ -49,24 +52,20 @@ button {
 
 .modal {
     background-color: #fff;
-    width: 600px;
-    max-width: 100%;
+    width: 80%;
+    max-width: 600px;
     padding: 30px 50px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-align: center;
 }
 
-h1 {
+h1, h2 {
     margin: 0;
-}
-
-h2 {
-    font-size: 16px;
+    font-size: 24px;
 }
 
 .record {
-    padding: 10px 170px;
+    padding: 10px 0;
 }
 
 ol {
@@ -76,11 +75,12 @@ ol {
 
 input {
     padding: 10px;
-    width: 30%;
+    width: 80%;
+    max-width: 300px;
     margin: 3%;
     border: none;
     border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.1);
     color: #333;
 }
 
@@ -89,52 +89,51 @@ p {
     font-size: 14px;
 }
 
-.encabezado-juego {
-    text-align: center;
-}
-
 .circulo {
     z-index: 1;
-    width: 300px;
-    height: 300px;
+    width: 200px; /* Disminuir el tamaño del círculo */
+    height: 200px; /* Disminuir el tamaño del círculo */
     border-radius: 50%;
     position: relative;
     overflow: hidden;
-    margin: 50px;
+    margin: 20px auto;
 }
 
 .boton {
-    width: 50%;
+    width: 50%; 
     height: 50%;
     position: absolute;
     cursor: pointer;
     border: none;
-    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease; /* Ajuste solo a las propiedades relevantes */
-    z-index: 1;
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
 }
 
 .rojo {
     background-color: rgba(233, 28, 21, 0.884);
     top: 0;
     left: 0;
+    border-top-left-radius: 50%;
 }
 
 .verde {
     background-color: rgb(121, 202, 29);
     top: 0;
     right: 0;
+    border-top-right-radius: 50%;
 }
 
 .azul {
     background-color: rgb(48, 174, 225);
     bottom: 0;
     left: 0;
+    border-bottom-left-radius: 50%;
 }
 
 .amarillo {
     background-color: rgb(230, 230, 46);
     bottom: 0;
     right: 0;
+    border-bottom-right-radius: 50%;
 }
 
 .active,
@@ -152,11 +151,39 @@ p {
 
 @keyframes spin {
     100% {
-        transform: rotate(180deg)
+        transform: rotate(180deg);
     }
 }
 
 #bestScore {
     margin-top: 10px;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .modal {
+        padding: 20px;
+    }
+
+    .circulo {
+        width: 150px; /* Tamaño del círculo en pantallas pequeñas */
+        height: 150px; /* Tamaño del círculo en pantallas pequeñas */
+    }
+
+    .boton {
+        width: 50%;
+        height: 50%;
+    }
+
+    h1, h2 {
+        font-size: 18px;
+    }
+
+    p, input, button {
+        font-size: 12px;
+    }
+
+    input {
+        width: 90%;
+    }
 }
