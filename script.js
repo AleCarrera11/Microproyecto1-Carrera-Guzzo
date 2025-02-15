@@ -81,13 +81,13 @@ class Simon {
             score: scoreDisplay,
             bestScoreValue: bestScoreValueDisplay
         };
-        this.errorSound = new Audio('./sounds/error.mp3'); // Asegúrate de tener el archivo de sonido "error.wav" en la carpeta "sounds"
-        this.buttonSounds = [
-            new Audio('./sounds/do.mp3'),
-            new Audio('./sounds/re.mp3'),
-            new Audio('./sounds/mi.mp3'),
-            new Audio('./sounds/fa.mp3')
-        ];
+        this.errorSound = new Audio('./sounds/error.mp3'); 
+        this.buttonSounds = {
+            0: new Audio('./sounds/do.mp3'),   
+            1: new Audio('./sounds/re.mp3'),   
+            2: new Audio('./sounds/mi.mp3'),   
+            3: new Audio('./sounds/fa.mp3')    
+        };
     }
 
     //iniciar el juego
@@ -144,6 +144,7 @@ class Simon {
     // Valida si el color seleccionado es el correcto
     validateChosenColor(value) {
         if (this.sequence[this.userPosition] === value) {
+            this.buttonSounds[value].currentTime = 0;
             this.buttonSounds[value].play();
             if (this.round === this.userPosition) {
                 this.updateRound(this.round + 1);
@@ -175,10 +176,13 @@ class Simon {
         let sequenceIndex = 0;
         let timer = setInterval(() => {
             const button = this.buttons[this.sequence[sequenceIndex]];
-            setTimeout(() => this.buttonSounds[this.sequence[sequenceIndex]].play(), 10); 
+            const sound = this.buttonSounds[this.sequence[sequenceIndex]];
+            sound.currentTime = 0;
+            sound.play(); 
             this.toggleButtonStyle(button);
             setTimeout(() => this.toggleButtonStyle(button), this.speed / 2);
             sequenceIndex++;
+    
             if (sequenceIndex > this.round) {
                 this.blockedButtons = false;
                 clearInterval(timer);
