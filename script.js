@@ -67,7 +67,7 @@ class Simon {
     constructor(simonButtons, startButton, roundDisplay, scoreDisplay, bestScoreValueDisplay, nombreJugador) {
         this.round = 0;
         this.userPosition = 0;
-        this.totalRounds = 10;
+        this.totalRounds = 20;
         this.sequence = [];
         this.speed = 1000;
         this.blockedButtons = true;
@@ -196,13 +196,18 @@ class Simon {
     }
 
     gameLost() {
-        this.errorSound.currentTime=0;
-        this.errorSound.play();
+        this.blockedButtons = true; 
         this.display.startButton.disabled = false;
-        this.blockedButtons = true;
-        alert("Perdiste! Reinicia de nuevo el juego si quieres volver a intentarlo");
-        guardarRecord(this.nombreJugador, this.score); 
+        
+        this.errorSound.currentTime = 0;
+        this.errorSound.play();
+    
+        setTimeout(() => {
+            alert("Perdiste! Reinicia de nuevo el juego si quieres volver a intentarlo");
+            guardarRecord(this.nombreJugador, this.score);
+        }, 500); 
     }
+    
 
     gameWon() {
         this.display.startButton.disabled = false;
